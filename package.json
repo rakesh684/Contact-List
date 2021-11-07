@@ -1,0 +1,14 @@
+{
+  "name": "contact_list",
+  "version": "1.0.0",
+  "description": "making a list of contacts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rakesh kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
