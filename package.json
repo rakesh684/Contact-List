@@ -11,5 +11,14 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakesh684/Contact-List.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rakesh684/Contact-List/issues"
+  },
+  "homepage": "https://github.com/rakesh684/Contact-List#readme"
 }

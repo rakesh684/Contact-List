@@ -1,7 +1,6 @@
 // creating contact list
 // Adding express
 const express = require('express');
-const { join } = require('path');
 
 // adding path for views where path is inbuilt function
 //for folder as property we need path
@@ -13,6 +12,11 @@ const app = express();
 app.set('view engine','ejs');//this tell express that ejs is a view engine
 app.set('views', path.join(__dirname,'views'));// it will lookout view folder in __dirname directory
 
+//creating parser for parse our data
+app.use(express.urlencoded());
+
+// accessing static file using middleware
+app.use(express.static('assets'));//it will find out folder 'assets' from our directory
 var contactList=[
   {
     name : "rakesh",
@@ -50,8 +54,8 @@ app.get('/',function(req , res){
 }) 
 
 app.post('/create-contact', function(req, res){
-  contactList.push(req.body);
-  return res.redirect('/practice');
+  contactList.push(req.body); 
+  return res.redirect('/');
 })
 
 app.listen(port,function(err){
@@ -60,3 +64,32 @@ app.listen(port,function(err){
   }
   console.log("Yup! server is running on port",port);
 })
+
+//query and string parameter
+// deleting query
+app.get('/delete-contact/:phone', function(req, res){
+  console.log(req.query);
+  let phone = req.query.phone
+
+  let contactindex = contactList.findIndex(contact =>
+    contact.phone == phone);
+    if(contactindex != -1){
+      contactList.slice(contactindex,1);
+    }
+    return res.redirect('back');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
