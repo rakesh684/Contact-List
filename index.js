@@ -6,6 +6,10 @@ const express = require('express');
 //for folder as property we need path
 const path = require('path');
 const port = 8080;
+
+// adding db
+const db = require('./config/mongoose');
+const Contact = require('./models/contact');
 const app = express();
 // app.set pass new property with their value
 // __dirname this give the path where my current directory is working
@@ -47,15 +51,38 @@ app.get('/practice',function(req, res){
 // get is callback function
 app.get('/',function(req , res){
     //  res.end("<h1>Cool , it is running</h1>")
-    return res.render('home',{
-      title : "Contact List",
-      contact_list : contactList
-    });
+    Contact.find({}, function(err, contacts){
+      if(err){
+          console.log("error in fetching contacts from db");
+          return;
+      }
+      return res.render('home',{
+          title: "Contact List",
+          contact_list: contacts
+      });
+
+  });
+
+    // return res.render('home',{
+    //   title : "Contact List",
+    //   contact_list : contactList
+    // });
 }) 
 
 app.post('/create-contact', function(req, res){
-  contactList.push(req.body); 
-  return res.redirect('/');
+  // contactList.push(req.body);
+  // return res.redirect('/');
+
+  Contact.create({
+    name: req.body.name,
+    phone: req.body.phone
+}, function(err, newContact){
+    if(err){console.log('Error in creating a contact!')
+        return;}
+        console.log('******', newContact);
+        return res.redirect('back');
+})
+
 })
 
 app.listen(port,function(err){
@@ -67,17 +94,19 @@ app.listen(port,function(err){
 
 //query and string parameter
 // deleting query
-app.get('/delete-contact/:phone', function(req, res){
+app.get('/delete-contact/', function(req, res){
   console.log(req.query);
-  let phone = req.query.phone
+  let id = req.query.id
 
-  let contactindex = contactList.findIndex(contact =>
-    contact.phone == phone);
-    if(contactindex != -1){
-      contactList.slice(contactindex,1);
-    }
-    return res.redirect('back');
+  Contact.findOneAndDelete(id, function(err){
+      if(err){
+          console.log('error in deleting the object');
+          return;
+      }
+      return res.redirect('back');
+  })
 });
+
 
 
 
